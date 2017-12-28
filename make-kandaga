@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+PATH_PWD=`pwd` 
+cd $PATH_PWD
+gcc -o kandaga kandaga.c
+
+# ======================= #
+#   Setup for All Users   #
+# ======================= #
+PATH_LINK="/usr/local/bin/kandaga"
+# A) Using Compile  
+# sudo gcc -o $PATH_LINK kandaga.c 
+
+# B) Using Symlink  
+if ! [ -f "$PATH_LINK" ]
+then
+  sudo ln -s $PATH_PWD/kandaga /usr/local/bin/kandaga
+  sudo ln -s /usr/local/bin/kandaga /bin/kandaga
+fi
