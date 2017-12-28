@@ -1,0 +1,28 @@
+#################################
+#   MySQL                       #
+#################################
+default: &default
+  adapter: mysql2
+  encoding: unicode
+  pool: 10
+  host: 127.0.0.1
+  port: 3306
+  socket: /tmp/mysql.sock
+  username: 
+  password: 
+  
+development:
+  <<: *default
+  database: kandagacms
+
+test:
+  <<: *default
+  database: kandagacms_test
+
+staging:
+  <<: *default
+  database: kandagacms_staging
+
+production:
+  <<: *default
+  database: kandagacms_pro

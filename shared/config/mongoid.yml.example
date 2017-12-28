@@ -1,0 +1,29 @@
+#################################
+#   MongoDB                     #
+#################################
+development:
+  clients:
+    default:
+      database: kandagacms
+      hosts:
+        - 127.0.0.1:27017
+      options:
+  options:
+
+staging:
+  clients:
+    default:
+      database: kandagacms
+      hosts:
+        - 127.0.0.1:27017
+      options:
+  options:
+
+production:
+  clients:
+    default:
+      database: kandagacms_pro
+      hosts:
+        - 127.0.0.1:27017
+      options:
+  options:

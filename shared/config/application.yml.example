@@ -1,0 +1,31 @@
+default: &default
+  app_name: 'KandagaCMS'
+  app_key: 'KANDAGA_2017_12'
+  version: '1.0.1'
+
+development:
+  <<: *default
+  google_sever_key: ''
+  google_app_name: ''
+  google_app_id: ''
+  google_browser_key: ''
+  gmail_username: ''
+  gmail_password: ''
+
+staging:
+  <<: *default
+  google_sever_key: ''
+  google_app_name: ''
+  google_app_id: ''
+  google_browser_key: ''
+  gmail_username: ''
+  gmail_password: ''
+
+production:
+  <<: *default
+  google_sever_key: ''
+  google_app_name: ''
+  google_app_id: ''
+  google_browser_key: ''
+  gmail_username: ''
+  gmail_password: ''

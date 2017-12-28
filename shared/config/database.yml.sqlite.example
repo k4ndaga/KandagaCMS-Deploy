@@ -1,0 +1,23 @@
+#################################
+#   SQLite                      #
+#################################
+default: &default
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: db/kandagacms.db
+
+test:
+  <<: *default
+  database: db/kandagacms.db
+
+staging:
+  <<: *default
+  database: db/kandagacms.db
+
+production:
+  <<: *default
+  database: db/kandagacms_pro.db
