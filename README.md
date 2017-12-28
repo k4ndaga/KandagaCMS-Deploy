@@ -13,7 +13,7 @@ KandagaCMS Deployment Tools Build With GNU C (GCC)
   ### ENVIRONMENT DEPLOY ###                                              
 --------------------------------------------------------------------------
   # ENVIRONMENT   : staging                                         
-  # PATH ROOT     : /home/zeroc0d3/zeroc0d3-deploy                                         
+  # PATH ROOT     : /home/deploy/KandagaCMS                                       
   # RAILS VERSION : 4  
   # WEB SERVER    : $WEB_SERVER                                       
 --------------------------------------------------------------------------
