@@ -1,31 +1,60 @@
 default: &default
-  app_name: 'KandagaCMS'
-  app_key: 'KANDAGA_2017_12'
-  version: '1.0.1'
+  CMS_NAME: 'KandagaCMS'
+  CMS_KEY: 'KANDAGA_2017_12'
+  CMS_VERSION: '1.0.1'
+
+  AWS_SES_USERNAME: ''
+  AWS_SES_PASSWORD: ''
+  AWS_ACCESS_KEY_ID: ''
+  AWS_SECRET_ACCESS_KEY: ''
+
+  FOG_REGION: ''
+  FOG_DIRECTORY: ''
+
+  FACEBOOK_KEY: ''
+  FACEBOOK_SECRET: ''
+
+  GOOGLE_CLIENT_ID: ''
+  GOOGLE_CLIENT_SECRET: ''
+
+  ANDROID_GCM_KEY: ''
+
+  IOS_PUSH_CERTIFICATE: ''
+  IOS_PUSH_PASSPHRASE: ''
+  IOS_PUSH_GATEWAY: ''
+
+  MEMCACHE_HOST: '192.168.0.100'
+  REDIS_IP_ADDRESS: 'localhost'
+  REDIS_PORT: 6379
+
+  FTP_HOST: 'assets.kandagacms.io'
+  FTP_USER: ''
+  FTP_FOLDER: ''
+  FTP_PASSWORD: ''
 
 development:
   <<: *default
-  google_sever_key: ''
-  google_app_name: ''
-  google_app_id: ''
-  google_browser_key: ''
-  gmail_username: ''
-  gmail_password: ''
+  GOOGLE_SERVER_KEY: ''
+  GOOGLE_APP_NAME: ''
+  GOOGLE_APP_ID: ''
+  GOOGLE_BROWSER_KEY: ''
+  GMAIL_USERNAME: ''
+  GMAIL_PASSWORD: ''
 
 staging:
   <<: *default
-  google_sever_key: ''
-  google_app_name: ''
-  google_app_id: ''
-  google_browser_key: ''
-  gmail_username: ''
-  gmail_password: ''
+  GOOGLE_SERVER_KEY: ''
+  GOOGLE_APP_NAME: ''
+  GOOGLE_APP_ID: ''
+  GOOGLE_BROWSER_KEY: ''
+  GMAIL_USERNAME: ''
+  GMAIL_PASSWORD: ''
 
 production:
   <<: *default
-  google_sever_key: ''
-  google_app_name: ''
-  google_app_id: ''
-  google_browser_key: ''
-  gmail_username: ''
-  gmail_password: ''
+  GOOGLE_SERVER_KEY: ''
+  GOOGLE_APP_NAME: ''
+  GOOGLE_APP_ID: ''
+  GOOGLE_BROWSER_KEY: ''
+  GMAIL_USERNAME: ''
+  GMAIL_PASSWORD: ''

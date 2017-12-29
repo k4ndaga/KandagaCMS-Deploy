@@ -60,7 +60,6 @@ char *LIST_SHARED_FOLDERS[] = {
 
 // Shared Files
 char *LIST_SHARED_FILES[] = {
-    ".env",
     "config.ru",
     "config/application.yml",
     "config/database.yml",
