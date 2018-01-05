@@ -28,7 +28,7 @@ int IS_ERROR_DEPLOY = 0; // Error Deployment Status   (0 = no error, 1 = still e
         USER CONFIGURATION 
    ======================================= */
 int NUM_RELEASE   = 10;               // Maximum Number of Release Folder 
-char ENV[64]      = "production";     // Selected Environment (staging / production)
+char ENV[64]      = "staging";        // Selected Environment (staging / production)
 int NUM_LOG_VIEW  = 50;               // Maximum Line Number Viewing Log 
 int RAILS_VERSION = 4;                // Rails Version (default: 5)
 int ENABLE_MIGRATION = 0;             // Force Enable Migration (0 = disable/default, 1 = enable)
@@ -356,7 +356,7 @@ void select_env()
 void logo()
 {
     printf("\033[22;32m==========================================================================\033[0m\n");
-    printf("\033[22;34m  Kandaga Ruby Deploy :: ver-%s                                          \033[0m\n", VERSION);
+    printf("\033[22;34m  KandagaCMS Ruby Deploy :: ver-%s                                        \033[0m\n", VERSION);
     printf("\033[22;34m  (c) 2017 Kandaga Team                                                  \033[0m\n");
 }
 

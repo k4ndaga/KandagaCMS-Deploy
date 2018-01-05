@@ -4,7 +4,7 @@
 #  Do Not Remove This File !                    #
 #  This is customize script before server up    # 
 # ============================================= #
-ENV='production'
+ENV='staging'
 GEM=`which gem`
 BUNDLE=`which bundle`
 
