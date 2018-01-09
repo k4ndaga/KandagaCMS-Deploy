@@ -357,7 +357,7 @@ void logo()
 {
     printf("\033[22;32m==========================================================================\033[0m\n");
     printf("\033[22;34m  KandagaCMS Ruby Deploy :: ver-%s                                        \033[0m\n", VERSION);
-    printf("\033[22;34m  (c) 2017 ZeroC0D3 Team                                                  \033[0m\n");
+    printf("\033[22;34m  (c) 2017 Kandaga Team                                                   \033[0m\n");
 }
 
 void header()

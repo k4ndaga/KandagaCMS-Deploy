@@ -84,5 +84,11 @@ KandagaCMS Deployment Tools Build With GNU C (GCC)
 * Configuration & How-To, see
 [**Wiki Documentation**](https://github.com/k4ndaga/KandagaCMS/wiki)
 
+## Changelog
+[**Log history**](https://github.com/k4ndaga/KandagaCMS-Deploy/blob/master/CHANGELOG)
+
+## Version
+[**Latest**](https://github.com/k4ndaga/KandagaCMS-Deploy/blob/master/VERSION)
+
 ## License
 [**MIT License**](https://github.com/k4ndaga/KandagaCMS-Deploy/blob/master/LICENSE)
