@@ -149,7 +149,7 @@ char PROD_PATH_PUMA[512]      = "/home/deploy/.rbenv/shims/puma";             //
 /* ======================================= 
         SYSTEM CONFIGURATION 
    ======================================= */
-char VERSION[16] = "1.4";                  // Version 
+char VERSION[16] = "1.4.1";                // Version 
 char APP_ROOT[512];                        // Root Path
 char APP_CURRENT[64] = "current";          // Current Folder
 char APP_RELEASE[64] = "release";          // Release Folder
@@ -357,7 +357,7 @@ void logo()
 {
     printf("\033[22;32m==========================================================================\033[0m\n");
     printf("\033[22;34m  KandagaCMS Ruby Deploy :: ver-%s                                        \033[0m\n", VERSION);
-    printf("\033[22;34m  (c) 2017 Kandaga Team                                                  \033[0m\n");
+    printf("\033[22;34m  (c) 2017 ZeroC0D3 Team                                                  \033[0m\n");
 }
 
 void header()
@@ -531,6 +531,7 @@ void message_error(char STR_SERVICE[512])
 
 void run_fastcmd(char STR_COMMAND[1024])
 {
+    get_command(STR_COMMAND);
     sprintf(cmdRun, "%s", STR_COMMAND);
     ret = system(cmdRun);
 }
@@ -540,6 +541,7 @@ void run_cmd(char STR_SERVICE[512],
              char STR_COMMAND[1024])
 {
     message_service(STR_DESCRIPTION);
+    get_command(STR_COMMAND);
     sprintf(cmdRun, "%s", STR_COMMAND);
     ret = system(cmdRun);
     if (!ret) {
@@ -560,6 +562,7 @@ void run_single(char STR_SERVICE[512],
                 char STR_COMMAND[1024])
 {
     message_service(STR_DESCRIPTION);
+    get_command(STR_COMMAND);
     sprintf(cmdRun, "%s", STR_COMMAND);
     system(cmdRun);
     message_ok(STR_SERVICE);
@@ -575,7 +578,6 @@ void nginx_restart()
     char STR_SERVICE[512]     = "NGINX Restarting...";
     char STR_COMMAND[1024]    = "sudo /etc/init.d/nginx restart";
     header();
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
     footer();
@@ -588,7 +590,6 @@ void nginx_reload()
     char STR_SERVICE[512]     = "NGINX Reloading...";
     char STR_COMMAND[1024]    = "sudo /etc/init.d/nginx reload";
     header();
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
     footer();
@@ -602,7 +603,6 @@ void kill_mongodb()
     char STR_DESCRIPTION[512] = "Stop MongoDB Service";
     char STR_SERVICE[512]     = "MongoDB Stop...";
     char STR_COMMAND[1024]    = "ps aux | grep -i mongod | awk {'print $2'} | sudo xargs kill -9";
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -616,7 +616,6 @@ void run_mongodb()
     // Goto App Current Folder
     get_folder_current();
     sprintf(STR_COMMAND, "cd %s; sudo mongod --fork --logpath %s", APP_CURRENT, SYS_LOG_MONGODB);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -649,7 +648,6 @@ void kill_redis()
     char STR_DESCRIPTION[512] = "Stop Redis Service";
     char STR_SERVICE[512]     = "Redis Stop...";
     char STR_COMMAND[1024]    = "ps aux | grep -i redis-server | awk {'print $2'} | sudo xargs kill -9";
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -659,7 +657,6 @@ void run_redis()
     char STR_DESCRIPTION[512] = "Start Redis Service (Daemonize)";
     char STR_SERVICE[512]     = "Redis Start...";
     char STR_COMMAND[1024]    = "redis-server --daemonize yes";
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -705,7 +702,6 @@ void asset_precompile_process()
         // Run: bundle exec rails assets:precompile RAILS_ENV=[environment]
         sprintf(STR_COMMAND, "cd %s; %s exec %s assets:precompile RAILS_ENV=%s --trace", SNAP_FOLDER_RELEASE, PATH_BUNDLE, PATH_RAKE, ENV);
     }
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -735,7 +731,6 @@ void asset_rollback_process()
         // Run: bundle exec rails assets:clobber RAILS_ENV=[environment]
         sprintf(STR_COMMAND, "cd %s; %s exec %s assets:clobber RAILS_ENV=%s --trace", SNAP_FOLDER_RELEASE, PATH_BUNDLE, PATH_RAKE, ENV);
     }
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -756,7 +751,6 @@ void kill_puma()
     char STR_DESCRIPTION[512] = "Stop Puma Service";
     char STR_SERVICE[512]     = "Puma Terminated...";
     char STR_COMMAND[1024]    = "ps aux | grep -i puma | awk {'print $2'} | sudo xargs kill -9";
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -772,7 +766,6 @@ void run_puma()
     // Run: bundle exec puma -D -c [config_puma] -E [environment]
     //sprintf(STR_COMMAND, "cd %s; %s exec %s -C %s RAILS_ENV=%s", CURRENT_FOLDER, PATH_BUNDLE, PATH_PUMA, CONFIG_PUMA, ENV);
     sprintf(STR_COMMAND, "cd %s; RAILS_ENV=%s %s exec %s -C %s %s", CURRENT_FOLDER, ENV, PATH_BUNDLE, PATH_PUMA, CONFIG_PUMA, CONFIG_RU);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -806,7 +799,6 @@ void kill_unicorn()
     char STR_DESCRIPTION[512] = "Stop Unicorn Service";
     char STR_SERVICE[512]     = "Unicorn Terminated...";
     char STR_COMMAND[1024]    = "ps aux | grep -i unicorn | awk {'print $2'} | sudo xargs kill -9";
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -821,7 +813,6 @@ void run_unicorn()
     get_folder_current();
     // Run: bundle exec unicorn -D -c [config_unicorn] -E [environment]
     sprintf(STR_COMMAND, "cd %s; %s exec %s -D -c %s -E %s", CURRENT_FOLDER, PATH_BUNDLE, PATH_UNICORN, CONFIG_UNICORN, ENV);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -855,7 +846,6 @@ void kill_faye()
     char STR_DESCRIPTION[512] = "Stop Faye Service";
     char STR_SERVICE[512]     = "Faye Terminated...";
     char STR_COMMAND[1024]    = "ps aux | grep -i faye | awk {'print $2'} | sudo xargs kill -9";
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -869,7 +859,6 @@ void run_faye()
     // Goto App Current Folder
     get_folder_current();
     sprintf(STR_COMMAND, "cd %s; RAILS_ENV=%s %s exec %s %s -E %s -o 0.0.0.0 -D -P %s", CURRENT_FOLDER, ENV, PATH_BUNDLE, PATH_RACKUP, CONFIG_FAYE, ENV, PID_FAYE);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -902,7 +891,6 @@ void kill_pushr()
     char STR_DESCRIPTION[512] = "Stop Pushr Service";
     char STR_SERVICE[512]     = "Pushr Terminated...";
     char STR_COMMAND[1024]    = "ps aux | grep -i pushr | awk {'print $2'} | sudo xargs kill -9";
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -915,8 +903,8 @@ void run_pushr()
     // Goto App Current Folder
     get_folder_current();
     sprintf(STR_COMMAND, "cd %s; RAILS_ENV=%s %s exec %s -c %s -p %s >> %s", CURRENT_FOLDER, ENV, PATH_BUNDLE, PATH_PUSHR, CONFIG_PUSHR, PID_PUSHR, SYS_LOG_PUSHR);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
+    sleep(1);
 }
 
 void restart_pushr_process()
@@ -947,7 +935,6 @@ void kill_sidekiq()
     char STR_DESCRIPTION[512] = "Stop Sidekiq Service";
     char STR_SERVICE[512]     = "Sidekiq Terminated...";
     char STR_COMMAND[1024]    = "ps aux | grep -i sidekiq | awk {'print $2'} | sudo xargs kill -9";
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -965,8 +952,8 @@ void run_sidekiq()
     // Run: bundle exec sidekiq --queue default --index 0 --pidfile [pid_sidekiq] --environment [environment] --logfile [log_sidekiq] --concurrency 10 --daemon
     // sprintf(STR_COMMAND, "cd %s; %s exec %s --queue default --index 0 --pidfile %s --environment %s --logfile %s --concurrency 10 --daemon", CURRENT_FOLDER, PATH_BUNDLE, PATH_SIDEKIQ, PID_SIDEKIQ, ENV, SYS_LOG_SIDEKIQ);
 
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
+    sleep(1);
 }
 
 void restart_sidekiq_process()
@@ -1000,7 +987,6 @@ void log_env()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_ENV);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1013,7 +999,6 @@ void log_nginx_error()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_NGINX_ERROR);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1026,7 +1011,6 @@ void log_nginx_access()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_NGINX_ACCESS);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1039,7 +1023,6 @@ void log_mongodb()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_MONGODB);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1052,7 +1035,6 @@ void log_memcached()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_MEMCACHED);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1065,7 +1047,6 @@ void log_redis()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_REDIS);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1078,7 +1059,6 @@ void log_pusher()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_PUSHR);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1091,7 +1071,6 @@ void log_sidekiq()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_SIDEKIQ);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1104,7 +1083,6 @@ void log_unicorn()
     char STR_COMMAND[1024];
     sprintf(STR_COMMAND, "sudo tail -f -n %d %s", NUM_LOG_VIEW, SYS_LOG_UNICORN);
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1124,7 +1102,6 @@ void generate_secret_token()
         sprintf(STR_COMMAND, "%s secret", PATH_RAKE);
     }
     header();
-    get_command(STR_COMMAND);
     run_single(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     footer();
 }
@@ -1133,7 +1110,7 @@ void generate_secret_token()
     Deploy Process: 
         1)  [X] Clone Repository to Unix DateTime Release Folder
         2)  [X] Checkout Branch
-        3)  [X] Install Bundle  (gem install bundle)
+        3)  [X] Install Bundle  (gem install bundler)
         4)  [X] Install Package (bundle install)
         5)  [X] Remove Shared Folders
         6)  [X] Remove Shared Files
@@ -1161,8 +1138,8 @@ void git_clone()
     sprintf(SNAP_FOLDER_RELEASE, "%s/%s/%s", APP_ROOT, APP_RELEASE, SNAP_FOLDER);
     sprintf(STR_COMMAND, "cd %s; git clone %s %s", APP_ROOT, REPO_NAME, SNAP_FOLDER_RELEASE);
     //printf("%s, %s, %s", SNAP_FOLDER_RELEASE, SNAP_FOLDER, REPO_BRANCHR_COMMAND);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
+    sleep(1);
 }
 
 void change_branch()
@@ -1175,7 +1152,6 @@ void change_branch()
     get_folder_release();
     // Checkout Branch
     sprintf(STR_COMMAND, "cd %s; git checkout %s", SNAP_FOLDER_RELEASE, REPO_BRANCH);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1184,13 +1160,12 @@ void install_bundle()
 {
     select_env();
     char STR_DESCRIPTION[512] = "Install Bundle";
-    char STR_SERVICE[512]     = "Running: `gem install bundle`...";
+    char STR_SERVICE[512]     = "Running: `gem install bundler`...";
     char STR_COMMAND[1024];
     // Goto App Path Release
     get_folder_release();
     // Run: gem install bundle
-    sprintf(STR_COMMAND, "cd %s; %s install bundle", SNAP_FOLDER_RELEASE, PATH_GEM);
-    get_command(STR_COMMAND);
+    sprintf(STR_COMMAND, "cd %s; %s install bundler", SNAP_FOLDER_RELEASE, PATH_GEM);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1205,7 +1180,6 @@ void install_package()
     get_folder_release();
     // Run: bundle install
     sprintf(STR_COMMAND, "cd %s; %s install", SNAP_FOLDER_RELEASE, PATH_BUNDLE);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1217,7 +1191,6 @@ void remove_release_folders(char RELEASE_SHARED_FOLDERS[512])
     get_folder_release();
     // Run: rm -rf [release_folder]
     sprintf(STR_COMMAND, "cd %s; rm -rf %s", APP_ROOT, RELEASE_SHARED_FOLDERS);
-    get_command(STR_COMMAND);
     run_fastcmd(STR_COMMAND);
 }
 
@@ -1228,7 +1201,6 @@ void remove_release_files(char RELEASE_SHARED_FILES[512])
     get_folder_release();
     // Run: rm -f [release_file]
     sprintf(STR_COMMAND, "cd %s; rm -f %s", APP_ROOT, RELEASE_SHARED_FILES);
-    get_command(STR_COMMAND);
     run_fastcmd(STR_COMMAND);
 }
 
@@ -1256,7 +1228,6 @@ void initialize_shared_folder()
         remove_release_folders(LOOP_TARGET_FOLDER_SHARED);
         // Create New Symlink From Shared
         sprintf(STR_COMMAND, "cd %s; ln -sfn %s %s", APP_ROOT, LOOP_SOURCE_FOLDER_SHARED, LOOP_TARGET_FOLDER_SHARED);
-        get_command(STR_COMMAND);
         run_fastcmd(STR_COMMAND);
     }
     message_ok(STR_SERVICE);
@@ -1287,7 +1258,6 @@ void initialize_shared_files()
         remove_release_files(LOOP_TARGET_FILES_SHARED);
         // Create New Symlink From Shared
         sprintf(STR_COMMAND, "cd %s; ln -sfn %s %s", APP_ROOT, LOOP_SOURCE_FILES_SHARED, LOOP_TARGET_FILES_SHARED);
-        get_command(STR_COMMAND);
         run_fastcmd(STR_COMMAND);
     }
     message_ok(STR_SERVICE);
@@ -1304,7 +1274,6 @@ void initialize_current()
     get_folder_current();
     // Symlink Current Folder From Latest Release
     sprintf(STR_COMMAND, "cd %s; rm -f %s; ln -s %s %s", APP_ROOT, CURRENT_FOLDER, SNAP_FOLDER_RELEASE, CURRENT_FOLDER);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1330,7 +1299,6 @@ void run_migration()
         // < Rails v5.0
         sprintf(STR_COMMAND, "cd %s; %s exec %s db:migrate RAILS_ENV=%s DISABLE_DATABASE_ENVIRONMENT_CHECK=%d", SNAP_FOLDER_RELEASE, PATH_BUNDLE, PATH_RAKE, ENV, FORCE_MIGRATION);
     }
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1355,7 +1323,6 @@ void run_seed()
     }
     // NOTE: Specific seed database class
     // bundle exec rake db:seed SEED_FILES=[class_seed_name] RAILS_ENV=[environment]
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1378,7 +1345,6 @@ void run_migration_rollback()
         // < Rails v5.0
         sprintf(STR_COMMAND, "cd %s; %s exec %s db:rollback STEP=%d RAILS_ENV=%s", SNAP_FOLDER_RELEASE, PATH_BUNDLE, PATH_RAKE, ROLLBACK, ENV);
     }
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1401,7 +1367,6 @@ void run_preinstall()
     // Copy preinstall script to 'current' folder
     // Running Preinstallation in the newest 'release' folder
     sprintf(STR_COMMAND, "cd %s; cp %s/%s %s/%s; sudo /bin/sh %s/%s", CURRENT_FOLDER, APP_ROOT, PREINSTALL, CURRENT_FOLDER, PREINSTALL, CURRENT_FOLDER, PREINSTALL);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
@@ -1478,7 +1443,6 @@ void remove_release_clone()
     get_folder_release();
     // Remove All Cloned Folder (SNAP_FOLDER)
     sprintf(STR_COMMAND, "cd %s; rm -rf %s", APP_ROOT, SNAP_FOLDER_RELEASE);
-    get_command(STR_COMMAND);
     run_cmd(STR_SERVICE, STR_DESCRIPTION, STR_COMMAND);
     sleep(1);
 }
