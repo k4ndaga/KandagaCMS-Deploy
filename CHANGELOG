@@ -1,3 +1,26 @@
+## version 1.5.2
+====================
+* Change environment path for staging/development to /home/deploy/zeroc0delab.dev
+* Change environment path for production to /home/deploy/zeroc0delab
+
+## version 1.5.1
+====================
+* Fixing running environment services
+
+## version 1.5
+====================
+* Add afterinstall script for running some process after successfully deploy
+* Refactoring menu services (restart / stop)
+* Refactoring menu view logs
+* Refactoring menu utilities
+
+## version 1.4.2
+====================
+* Add service push notification via GCM (Google Cloud Messaging)
+* Add view log puma
+* Fixing before and after web service up (restart process)
+* Fixing before and after web service down (kill process)
+
 ## version 1.4.1
 ====================
 * Fixing debug command from all step running deploy
